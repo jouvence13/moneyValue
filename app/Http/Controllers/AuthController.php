@@ -109,7 +109,10 @@ return response()->json($validator->errors(), 400);
 }
 $user = User::create(array_merge(
 $validator->validated(),
-['password' => bcrypt($request->password)]
+['password' => bcrypt($request->password),
+/* 'is_admin' => false // Important ici */
+]
+
 ));
 return response()->json([
 'message' => 'User successfully registered',

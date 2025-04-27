@@ -1,0 +1,48 @@
+### Vérifier l'état de l'API (status)
+GET http://localhost:8000/api/status
+Accept: application/json
+
+
+### Obtenir la liste des devises (currencies)
+GET http://localhost:8000/api/currencies
+Accept: application/json
+
+
+### Obtenir la liste des paires de devises (pairs)
+GET http://localhost:8000/api/pairs
+Accept: application/json
+
+
+### Effectuer une conversion de devises (convert)
+GET http://localhost:8000/api/convert?from=USD&to=EUR&amount=100
+Accept: application/json
+
+
+### Authentifie-toi en tant qu'admin avant pour les routes suivantes
+
+### Ajouter une paire de devises (POST)
+POST http://localhost:8000/api/pairs
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+  "devise_from_id": 1,
+  "devise_to_id": 2,
+  "rate": 1.10
+}
+
+
+### Modifier une paire de devises (PUT)
+PUT http://localhost:8000/api/pairs/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+  "rate": 1.15
+}
+
+
+### Supprimer une paire de devises (DELETE)
+DELETE http://localhost:8000/api/pairs/1
+Accept: application/json
+Authorization: Bearer {{token}}
