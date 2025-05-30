@@ -11,7 +11,7 @@ class StorePairRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; // Autoriser la requête
     }
 
     /**
@@ -22,8 +22,8 @@ class StorePairRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'devise_from_id' => 'required|exists:currencies,id|different:devise_to_id',
-            'devise_to_id' => 'required|exists:currencies,id',
+            'devise_from_code' => 'required|exists:currencies,code|different:devise_to_code',
+            'devise_to_code' => 'required|exists:currencies,code',
             'rate' => 'required|numeric|min:0',
         ];
     }

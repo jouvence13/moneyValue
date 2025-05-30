@@ -13,12 +13,11 @@ class Currency extends Model
 
     public function pairsFrom()
     {
-        return $this->hasMany(Pair::class, 'devise_from_id');
+        return $this->hasMany(Pair::class, 'devise_from_code', 'code');
     }
 
     public function pairsTo()
     {
-        return $this->hasMany(Pair::class, 'devise_to_id');
+        return $this->hasMany(Pair::class, 'devise_to_code', 'code');
     }
 }
-

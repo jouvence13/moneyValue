@@ -9,15 +9,15 @@ class Pair extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['devise_from_id', 'devise_to_id', 'rate', 'conversion_count'];
+    protected $fillable = ['devise_from_code', 'devise_to_code', 'rate', 'conversion_count'];
 
     public function deviseFrom()
     {
-        return $this->belongsTo(Currency::class, 'devise_from_id');
+        return $this->belongsTo(Currency::class, 'devise_from_code', 'code');
     }
 
     public function deviseTo()
     {
-        return $this->belongsTo(Currency::class, 'devise_to_id');
+        return $this->belongsTo(Currency::class, 'devise_to_code', 'code');
     }
 }

@@ -14,46 +14,46 @@ class PairController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    return Pair::with(['deviseFrom', 'deviseTo'])->get();
-}
+    {
+        return Pair::with(['deviseFrom', 'deviseTo'])->get();
+    }
 
-public function store(StorePairRequest $request)
-{
-    
-    return Pair::create($request->validated());
-}
+    public function show(Pair $pair)
+    {
+        return $pair->load(['deviseFrom', 'deviseTo']);
+    }
 
-public function update(UpdatePairRequest $request, Pair $pair)
-{
-    $pair->update($request->validated());
-    return $pair;
-}
+    public function store(StorePairRequest $request)
+    {
+        return Pair::create($request->validated());
+    }
 
-public function destroy(Pair $pair)
-{
-    $pair->delete();
-    return response()->noContent();
-}
+    public function update(UpdatePairRequest $request, Pair $pair)
+    {
+        $pair->update($request->validated());
+        return $pair;
+    }
 
+    public function destroy(Pair $pair)
+    {
+        $pair->delete();
+        return response()->noContent();
+    }
 public function convert(Request $request)
 {
     $request->validate([
-        'from' => 'required|string|size:3',
-        'to' => 'required|string|size:3',
-        'amount' => 'required|numeric|min:0',
+        'pair_id' => 'required|exists:pairs,id',  // Vérifie que la paire existe
+        'amount' => 'required|numeric|min:0',   //  Vérifie que le montant est numérique et >=0
     ]);
 
-    $from = Currency::where('code', strtoupper($request->from))->firstOrFail();
-    $to = Currency::where('code', strtoupper($request->to))->firstOrFail();
+    //  Récupère la paire sélectionnée
+    $pair = Pair::findOrFail($request->pair_id);
 
-    $pair = Pair::where('devise_from_id', $from->id)
-                ->where('devise_to_id', $to->id)
-                ->firstOrFail();
-
+    //  Incrémente le compteur
     $pair->increment('conversion_count');
 
-    $converted = $request->amount * $pair->rate;
+    //  Calcule la conversion (multiplie puis divise par 100)
+    $converted = ($request->amount * $pair->rate) / 100;
 
     return response()->json([
         'converted_amount' => $converted,
@@ -61,9 +61,11 @@ public function convert(Request $request)
     ]);
 }
 
-public function currencies()
-{
-    return Currency::all();
-}
 
+
+
+    public function currencies()
+    {
+        return Currency::all();
+    }
 }

@@ -123,9 +123,14 @@ return response()->json([
 */
 public function logout()
 {
-JwtAuth::logout();
-return response()->json(['message' => 'User successfully signed out']);
+    try {
+        JwtAuth::logout();
+        return response()->json(['message' => 'User successfully signed out']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Impossible de déconnecter. Vérifie ton token.'], 401);
+    }
 }
+
 /**
 * Rafraîchir le token JWT
 */

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('pairs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('devise_from_id')->constrained('currencies')->onDelete('cascade');
-            $table->foreignId('devise_to_id')->constrained('currencies')->onDelete('cascade');
-            $table->decimal('rate', 15, 8); // pour les taux de change précis
+           $table->string('devise_from_code', 3); // Les 3 lettres des codes ISO
+            $table->string('devise_to_code', 3);
+            $table->decimal('rate', 15, 8); // Pour les taux de change précis
             $table->unsignedBigInteger('conversion_count')->default(0);
             $table->timestamps();
         });
